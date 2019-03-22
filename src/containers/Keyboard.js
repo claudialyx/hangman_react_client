@@ -8,7 +8,7 @@ export default class Keyboard extends React.Component {
 
   // if game not over, run checkletter function
   handleClick = (letter) => {
-    if (this.props.enabled) {
+    if (this.props.keyboard_enabled) {
       this.props.checkLetter(letter);
     }
   }

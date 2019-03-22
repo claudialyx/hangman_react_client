@@ -3,8 +3,6 @@ import { Container, Grid, Segment } from 'semantic-ui-react';
 import './App.css'
 import HangmanGame from './containers/HangmanGame';
 
-
-
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -12,7 +10,6 @@ class App extends React.Component {
       count: 0,
     }
   }
-
 
   render() {
     return (

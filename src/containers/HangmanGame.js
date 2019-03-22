@@ -2,25 +2,42 @@ import React, { Component } from 'react';
 import HangmanDrawing from './HangmanDrawing';
 import LetterSlots from './LetterSlots';
 import Keyboard from './Keyboard';
+import ChooseWord from './ChooseWord';
 import _ from 'underscore';
 
-
-const wordBank = {
-    fruits: ["apple", "orange", "dragonfruit", "guava", "banana"],
-    occupation: ["teacher", "electrician", "engineer", "mechanics", "accountant"],
-    animals: ["horse", "tiger", "panda", "zebra", "boar"]
-}
 
 const fruits = ['apple', 'banana', 'carrot']
 // const fruits = ['spaghettiagliooilio', 'dreamscapes', 'informationoverloaded']
 
 export default class HangmanGame extends React.Component {
     state = {
-        word: _.sample(fruits),
+        word: '',
+        // word: _.sample(fruits),
+        wordBank: [],
         strikes: 0,
         guesses: [],
         over: false,
         won: false,
+        playerType: 'guesser',
+    }
+
+    componentDidMount() {
+        var results;
+        return (
+            fetch(`https://api.themoviedb.org/3/movie/popular?api_key=a345daaf3df75b855cb517049ed48a0b&language=en-US&page=1`)
+                .then(
+                    results => results.json(),
+                    console.log('results:', results)
+                )
+                .then(
+                    data => {
+                        var wordBank = data.results.map(result => {
+                            return result.title
+                        })
+                        this.setState({ wordBank: wordBank })
+                    }
+                )
+        )
     }
 
     checkWin = () => {
@@ -36,7 +53,7 @@ export default class HangmanGame extends React.Component {
 
     newGame = () => {
         this.setState({
-            word: _.sample(fruits),
+            word: '',
             strikes: 0,
             guesses: [],
             over: false,
@@ -64,6 +81,25 @@ export default class HangmanGame extends React.Component {
         this.setState({ strikes, guesses, over, won });
     }
 
+    changePlayer = () => {
+        if (this.state.over && this.state.playerType == 'guesser') {
+            this.setState({
+                playerType: 'chooser',
+            })
+        }
+        else {
+            this.setState({
+                playerType: 'guesser',
+            })
+        }
+    }
+
+    wordSelected = (selectedWord) => {
+        this.setState({
+            word: selectedWord,
+        })
+    }
+
     getTitle = () => {
         if (this.state.won) {
             return 'YOU WON!';
@@ -75,7 +111,8 @@ export default class HangmanGame extends React.Component {
     }
 
     render() {
-        const { word, strikes, over, guesses, won } = this.state
+        const { word, strikes, over, guesses, won, playerType, wordBank } = this.state
+        console.log('2', wordBank)
         return (
             <div>
                 <h1>{this.getTitle()}</h1>
@@ -91,8 +128,14 @@ export default class HangmanGame extends React.Component {
 
                 <Keyboard
                     checkLetter={this.checkLetter}
-                    enabled={!over && !won}
+                    keyboard_enabled={!over && !won && playerType == 'guesser'}
                     guesses={guesses} />
+
+                <ChooseWord
+                    playerType={playerType == 'chooser'}
+                    wordBank={wordBank}
+                    wordSelected={this.wordSelected}
+                />
 
                 <button
                     disabled={!over && !won}
