@@ -48,7 +48,7 @@ export default class LoginForm extends React.Component {
                 // debugger
                 this.setState({
                     hasErrors: true,
-                    errors: error.response.data.message,
+                    // errors: error.response.data.message,
                 })
             })
     }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import HangmanDrawing from './HangmanDrawing';
 import LetterSlots from './LetterSlots';
 import Keyboard from './Keyboard';
-import ChooseWord from './ChooseWord';
+// import ChooseWord from './ChooseWord';
 import _ from 'underscore';
 
 
@@ -18,7 +18,7 @@ export default class HangmanGame extends React.Component {
         guesses: [],
         over: false,
         won: false,
-        playerType: 'guesser',
+        // playerType: 'guesser',
     }
 
     componentDidMount() {
@@ -32,20 +32,40 @@ export default class HangmanGame extends React.Component {
                 .then(
                     data => {
                         var wordBank = data.results.map(result => {
+                            // console.log('wordbank:', wordBank)
                             return result.title
                         })
                         this.setState({ wordBank: wordBank })
                     }
                 )
+                .then(
+                    data => {
+                        this.setState({ word: this.wordSelected() })
+                        // console.log(this.state.word)
+                        // debugger
+                    })
         )
+    }
+
+    wordSelected = () => {
+        const { wordBank } = this.state
+        const n = Math.floor(Math.random() * wordBank.length)
+        const word = wordBank[n]
+        // let re = /[`~!@#$%^&*()_|+\-=÷¿?;:'",.<>\{\}\[\]\\\/]/;
+        // let letters_sanitized = letters.replace(/[`~!@#$%^&*()_|+\-=÷¿?;:'",.<>\{\}\[\]\\\/]/gi, '');
+        const word1 = word.replace(/[`~!@#$%^&*()_|+\-=÷¿?;:'",.<>\{\}\[\]\\\/]/gi, '');
+        const selectedWord = word1.toLowerCase()
+        console.log('selectedword', selectedWord)
+        return selectedWord
     }
 
     checkWin = () => {
         let { word, guesses } = this.state;
         // if guesses contains all letters of word, 
         // returns True (won)
-        //will chain ['a', 'p', 'p', 'l', 'e'] to all subsequent rows 
+        // will chain ['a', 'p', 'p', 'l', 'e'] to all subsequent rows 
         return !_.chain(word.split(''))
+            .filter(letter => letter !== ' ') //remove spaces
             .map(letter => _.contains(guesses, letter)) // returns true if contains letter
             .contains(false)//returns false because true does not contain  false
             .value() // value will be false, but due to ! in the beginning, it will return True
@@ -53,13 +73,13 @@ export default class HangmanGame extends React.Component {
 
     newGame = () => {
         this.setState({
-            word: '',
+            word: this.wordSelected(),
             strikes: 0,
             guesses: [],
             over: false,
             won: false
         })
-        console.log(this.state.word);
+        // console.log(this.state.word);
     }
 
     checkLetter = (letter) => {
@@ -72,6 +92,7 @@ export default class HangmanGame extends React.Component {
         guesses.push(letter);
         // check if won
         won = this.checkWin();
+        console.log('guesses:', this.state.guesses, 'letter:', letter)
         // if strikes reached maximum display full diagram image
         if (strikes >= 6) {
             strikes = 6;
@@ -81,24 +102,19 @@ export default class HangmanGame extends React.Component {
         this.setState({ strikes, guesses, over, won });
     }
 
-    changePlayer = () => {
-        if (this.state.over && this.state.playerType == 'guesser') {
-            this.setState({
-                playerType: 'chooser',
-            })
-        }
-        else {
-            this.setState({
-                playerType: 'guesser',
-            })
-        }
-    }
+    // changePlayer = () => {
+    //     if (this.state.over && this.state.playerType == 'guesser') {
+    //         this.setState({
+    //             playerType: 'chooser',
+    //         })
+    //     }
+    //     else {
+    //         this.setState({
+    //             playerType: 'guesser',
+    //         })
+    //     }
+    // }
 
-    wordSelected = (selectedWord) => {
-        this.setState({
-            word: selectedWord,
-        })
-    }
 
     getTitle = () => {
         if (this.state.won) {
@@ -111,7 +127,8 @@ export default class HangmanGame extends React.Component {
     }
 
     render() {
-        const { word, strikes, over, guesses, won, playerType, wordBank } = this.state
+        // const { word, strikes, over, guesses, won, playerType, wordBank } = this.state
+        const { word, strikes, over, guesses, won, wordBank } = this.state
         console.log('2', wordBank)
         return (
             <div>
@@ -128,14 +145,15 @@ export default class HangmanGame extends React.Component {
 
                 <Keyboard
                     checkLetter={this.checkLetter}
-                    keyboard_enabled={!over && !won && playerType == 'guesser'}
+                    keyboard_enabled={!over && !won}
+                    // keyboard_enabled={!over && !won && playerType == 'guesser'}
                     guesses={guesses} />
 
-                <ChooseWord
+                {/* <ChooseWord
                     playerType={playerType == 'chooser'}
                     wordBank={wordBank}
                     wordSelected={this.wordSelected}
-                />
+                /> */}
 
                 <button
                     disabled={!over && !won}
