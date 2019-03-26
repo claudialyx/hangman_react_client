@@ -60,5 +60,8 @@
       vertical-align: bottom; }
       .letter-slots .letter-slot.revealed {
         color: #d8dde2; }
+      .letter-slots .letter-slot.show{
+        border-bottom: none
+      }
     /*# sourceMappingURL=main.css.map */
   

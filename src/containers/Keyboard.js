@@ -3,6 +3,7 @@ import _ from 'underscore';
 
 const ROW_ONE = 'abcdefghijklm'.split('');
 const ROW_TWO = 'nopqrstuvwxyz'.split('');
+const ROW_THREE = '1234567890'.split('');
 
 export default class Keyboard extends React.Component {
 
@@ -45,7 +46,7 @@ export default class Keyboard extends React.Component {
   render() {
     return (
       <div className='hangman-keyboard'>
-        {[ROW_ONE, ROW_TWO].map(this.getRow)}
+        {[ROW_ONE, ROW_TWO, ROW_THREE].map(this.getRow)}
       </div>
     );
   }
