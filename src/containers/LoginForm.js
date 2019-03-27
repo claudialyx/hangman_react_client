@@ -39,7 +39,7 @@ export default class LoginForm extends React.Component {
                 console.log(response);
                 // debugger
                 localStorage.setItem('me', JSON.stringify(response.data));
-                localStorage.setItem('jwt', response.data.auth_token)
+                // localStorage.setItem('jwt', response.data.auth_token)
                 console.log(localStorage);
                 this.props.userSignedIn();
             })

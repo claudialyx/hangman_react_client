@@ -6,7 +6,7 @@ import LoginForm from './containers/LoginForm';
 import Router from './Router';
 import SignUpForm from './containers/SignUpForm';
 
-export default class Testing extends React.Component {
+export default class LandingPage extends React.Component {
     state = {
         clickSignUp: false,
         signedUp: false
@@ -47,7 +47,6 @@ export default class Testing extends React.Component {
                     }}>
                         <SignUpForm backToLogin={backToLogin} userSignedIn={this.props.userSignedIn} userSignedUp={this.userSignedUp} handleSignUp={handleSignUp} clickSignUp={clickSignUp} />
                     </Grid.Column>
-                    {/* <Router /> */}
                 </Grid >
             </div>
         )

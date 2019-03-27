@@ -10,8 +10,8 @@ import HangmanGame from './containers/HangmanGame';
 import Settings from './Settings';
 import axios from 'axios';
 
-const jwt = localStorage.getItem('jwt')
 
+const jwt = localStorage.getItem('jwt')
 export default class Hangman extends React.Component {
     state = {
         isOpen: false,
@@ -25,24 +25,24 @@ export default class Hangman extends React.Component {
     }
 
     // doing this just for the "R" in CRUD to get username
-    // componentDidMount = () => {
-    //     axios({
-    //         method: 'GET',
-    //         url: 'http://127.0.0.1:5000/api/v1/users/read',
-    //         headers: {
-    //             Authorization: `Bearer ${jwt}`,
-    //         }
-    //     })
-    //         .then(result => {
-    //             console.log('component:', result)
-    //             this.setState({
-    //                 showUsername: result.data[0]['username']
-    //             })
-    //         })
-    //         .catch(error => {
-    //             console.log("ERROR:", error)
-    //         })
-    // }
+    componentDidMount = () => {
+        axios({
+            method: 'GET',
+            url: 'http://127.0.0.1:5000/api/v1/users/read',
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+            }
+        })
+            .then(result => {
+                console.log('component:', result)
+                this.setState({
+                    showUsername: result.data[0]['username']
+                })
+            })
+            .catch(error => {
+                console.log("ERROR:", error)
+            })
+    }
 
     render() {
         // debugger
