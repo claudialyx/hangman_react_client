@@ -1,7 +1,8 @@
 import React from 'react';
 import { Button, Form, Grid } from 'semantic-ui-react';
 import background from '../just-waves.png';
-import axios from 'axios'
+import axios from 'axios';
+import { Alert } from 'reactstrap';
 
 export default class LoginForm extends React.Component {
     state = {
@@ -10,7 +11,7 @@ export default class LoginForm extends React.Component {
         loginStatus: false,
         loginMessage: [],
         hasErrors: false,
-        errors: '',
+        errors: [],
     }
     usernameInput = (event) => {
         this.setState({
@@ -36,31 +37,44 @@ export default class LoginForm extends React.Component {
             }
         })
             .then(response => {
-                console.log(response);
+                // console.log(response);
                 // debugger
                 localStorage.setItem('me', JSON.stringify(response.data));
                 // localStorage.setItem('jwt', response.data.auth_token)
-                console.log(localStorage);
+                // console.log(localStorage);
                 this.props.userSignedIn();
             })
             .catch(error => {
-                console.log('ERROR', error)
+                // console.log('ERROR', error)
+                // console.log('ERROR', error.response.data.message)
                 // debugger
                 this.setState({
                     hasErrors: true,
-                    // errors: error.response.data.message,
+                    errors: error.response.data.message,
                 })
             })
     }
 
+    displayError = () => {
+        const { errors } = this.state
+        console.log('jere', errors)
+        return (
+            < Alert color="danger"> {errors}! </Alert>
+        )
+    }
+
+
     render() {
-        const { username, password } = this.state
+        const { username, password, hasErrors } = this.state
         const { clickSignUp } = this.props
         return (
             <div>
                 {!clickSignUp ?
                     <div>
                         <label style={{ fontSize: "2em" }}>Log In</label>
+                        {hasErrors ?
+                            this.displayError()
+                            : null}
                         <Form >
                             <Form.Field>
                                 <label>Username</label>

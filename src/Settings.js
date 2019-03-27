@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Form, Checkbox, Message } from 'semantic-ui-react';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, Alert } from 'reactstrap';
 import axios from 'axios';
 
 
@@ -9,7 +9,7 @@ export default class Settings extends React.Component {
         email: '',
         username: '',
         password: '',
-        updateMessage: [],
+        update: false
     }
 
     emailInput = (event) => {
@@ -30,10 +30,24 @@ export default class Settings extends React.Component {
         })
     }
 
-    handleSubmit = (event) => {
-        event.preventDefault()
-        const jwt = localStorage.getItem('jwt')
+    update = () => {
+        this.setState({
+          update: true,
+        })
+        setTimeout(this.hideUpdateMessage, 5000)
+      }
+    
+    hideUpdateMessage = () => {
+    this.setState({
+        update: false
+    })
+    }
 
+    handleUpdate = (event) => {
+        event.preventDefault()
+        const jwt = JSON.parse(localStorage.getItem('me'))
+        console.log(jwt)
+        console.log(jwt.auth_token)
         axios({
             method: 'POST',
             url: 'http://127.0.0.1:5000/api/v1/users/update',
@@ -43,15 +57,17 @@ export default class Settings extends React.Component {
                 password: this.state.password,
             },
             headers: {
-                'Authorization': `Bearer ${jwt}`
+                'Authorization': `Bearer ${jwt.auth_token}`
             }
         })
             .then(response => {
-                console.log(response);
+                console.log('update response:',response);
+                this.update()
             })
             .catch(error => {
                 console.log('ERROR', error)
                 // // debugger
+                // yet to do validation for update
                 // this.setState({
                 //     hasErrors: true,
                 //     errors: error.response.data.message,
@@ -61,7 +77,7 @@ export default class Settings extends React.Component {
 
     handleDelete = (event) => {
         event.preventDefault()
-        const jwt = localStorage.getItem('jwt')
+        const jwt = localStorage.getItem('me')
 
         axios({
             method: 'POST',
@@ -72,7 +88,7 @@ export default class Settings extends React.Component {
                 password: this.state.password,
             },
             headers: {
-                'Authorization': `Bearer ${jwt}`
+                'Authorization': `Bearer ${jwt.auth_token}`
             }
         })
             .then(response => {
@@ -90,14 +106,15 @@ export default class Settings extends React.Component {
     }
 
     render() {
-        const { email, username, password } = this.state
+        const { email, username, password, update } = this.state
         const { isOpen, toggle } = this.props
         return (
             <div>
                 <Modal isOpen={isOpen} toggle={toggle}>
                     <ModalHeader toggle={toggle}>Setting (Update user details)</ModalHeader>
                     <ModalBody>
-                        <Form onSubmit={this.handleSubmit}>
+                        {update ? <Alert color="primary">Successfully updated </Alert> : null}
+                        <Form onSubmit={this.handleUpdate}>
                             <Form.Field>
                                 <label>Username</label>
                                 <input type="text" placeholder='Username' onChange={this.usernameInput} value={username} />

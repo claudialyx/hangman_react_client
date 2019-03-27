@@ -21,7 +21,7 @@ export default class HangmanGame extends React.Component {
             fetch(`https://api.themoviedb.org/3/movie/popular?api_key=a345daaf3df75b855cb517049ed48a0b&language=en-US&page=1`)
                 .then(
                     results => results.json(),
-                    console.log('results:', results)
+                    // console.log('results:', results)
                 )
                 .then(
                     data => {
@@ -86,7 +86,7 @@ export default class HangmanGame extends React.Component {
         guesses.push(letter);
         // check if won
         won = this.checkWin();
-        console.log('guesses:', this.state.guesses, 'letter:', letter)
+        // console.log('guesses:', this.state.guesses, 'letter:', letter)
         // if strikes reached maximum display full diagram image
         if (strikes >= 6) {
             strikes = 6;

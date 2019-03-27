@@ -10,7 +10,7 @@ export default class Router extends React.Component {
             <BrowserRouter>
                 <Switch>
                     <Route path="/hangman" component={Hangman} />
-                    <Route path="/signup" component={SignUpForm} />
+                    {/* <Route path="/signup" component={SignUpForm} /> */}
                     <Route path="/login" component={LoginForm} />
                 </Switch>
             </BrowserRouter>

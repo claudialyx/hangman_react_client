@@ -5,13 +5,14 @@ import {
     Navbar,
     Nav,
     NavItem,
+    Alert,
+    Badge,
 } from 'reactstrap';
 import HangmanGame from './containers/HangmanGame';
 import Settings from './Settings';
 import axios from 'axios';
 
 
-const jwt = localStorage.getItem('jwt')
 export default class Hangman extends React.Component {
     state = {
         isOpen: false,
@@ -26,17 +27,19 @@ export default class Hangman extends React.Component {
 
     // doing this just for the "R" in CRUD to get username
     componentDidMount = () => {
+        // const jwt = localStorage.getItem('me')
+        const jwt = JSON.parse(localStorage.me)
         axios({
             method: 'GET',
             url: 'http://127.0.0.1:5000/api/v1/users/read',
             headers: {
-                Authorization: `Bearer ${jwt}`,
+                Authorization: `Bearer ${jwt.auth_token}`,
             }
         })
             .then(result => {
-                console.log('component:', result)
+                // console.log('component:', result)
                 this.setState({
-                    showUsername: result.data[0]['username']
+                    showUsername: result.data.username
                 })
             })
             .catch(error => {
@@ -45,20 +48,19 @@ export default class Hangman extends React.Component {
     }
 
     render() {
-        // debugger
-        const { isOpen } = this.state
+        const { isOpen, showUsername } = this.state
+        const { signedIn, signedUp } = this.props
         const styles = { textDecoration: "none", color: "black" }
-        // var location = { pathname: '/settings' }
         return (
             <div>
                 <div>
-                    {jwt ? <h1>YAY LOGGED IN</h1> : <h1>NOT LOGGED IN</h1>}
-
                     {isOpen ? <Settings isOpen={isOpen} toggle={this.toggle} logout={this.props.logout} /> : null}
+                    {signedIn ? <Alert color="success">Welcome back {showUsername}! </Alert> : null}
+                    {signedUp ? <Alert color="success">Hey! {showUsername} you've successfully signed up! You can start playing now! </Alert> : null}
                     <Navbar color="light" light expand="md" >
                         <Nav className="ml-auto" navbar>
                             <NavItem className="mr-4">
-                                <Link to="/" style={styles} >{this.state.showUsername}</Link>
+                                <Link to="/" style={styles} >username: {showUsername}</Link>
                             </NavItem>
                             <NavItem className="mr-4">
 
@@ -75,19 +77,19 @@ export default class Hangman extends React.Component {
                         <Grid.Row stretched>
                             <Grid.Column style={{ width: "20vw", marginLeft: "2vw" }}>
                                 <Segment style={{ height: "95vh", display: "flex", flexDirection: "column" }}>
-                                    <div>Genre </div>
+                                    <h1>Genre: </h1>
+                                    <h1><Badge color="warning"> Recent Movies</Badge></h1>
                                 </Segment>
                             </Grid.Column>
                             <Grid.Column style={{ width: "70vw" }}>
                                 <Segment style={{ height: "95vh" }}>
-                                    <div>2 hangman here</div>
                                     <HangmanGame />
                                 </Segment>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
                 </div>
-            </div>
+            </div >
         )
     }
 }

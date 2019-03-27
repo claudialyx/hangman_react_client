@@ -3,18 +3,54 @@ import './App.css';
 import Hangman from './Hangman';
 import LandingPage from './LandingPage';
 import Router from './Router';
+import {Alert} from 'reactstrap';
 
 // const jwt = localStorage.getItem('jwt')
 
 class App extends React.Component {
   state = {
-    signedIn: false
+    signedIn: false,
+    clickSignUp: false,
+    signedUp: false,
+    delete:false,
   }
 
   userSignedIn = () => {
     this.setState({
-      signedIn: true
+      signedIn: true,
     })
+    setTimeout(this.hideLoginMessage, 5000)
+  }
+
+  hideLoginMessage = () => {
+    this.setState({
+      signedIn: false
+    })
+  }
+
+  userSignedUp = () => {
+    this.setState({
+      signedUp: true
+    })
+    setTimeout(this.hideSignupMessage, 5000)
+  }
+
+  hideSignupMessage = () => {
+    this.setState({
+      signedUp: false,
+    })
+  }
+
+  handleSignUp = () => {
+    this.setState({
+        clickSignUp: true
+    })
+}
+
+  backToLogin = () => {
+      this.setState({
+          clickSignUp: false
+      })
   }
 
   logout = () => {
@@ -27,18 +63,29 @@ class App extends React.Component {
   }
 
   render() {
-    const { signedIn } = this.state
+    const { signedIn, clickSignUp, signedUp} = this.state
+    const {userSignedUp, handleSignUp, backToLogin} = this
     return (
       // if not signed in, display sign in page, else display hangman board
       <div>
         <div>
-          {/* {localStorage.me ? <h1>LOGGED IN</h1> : <h1>NOT LOGGED IN</h1>} */}
           {/* if jwt exist, keep user signed in */}
+          { this.state.delete ? <Alert color="danger">You've successfully deleted your account.</Alert> : null }
           {localStorage.me ?
-            // {/* {jwt ? */}
-            <Hangman signedIn={signedIn} userSignedIn={this.userSignedIn} logout={this.logout} />
+            <Hangman 
+              signedUp={signedUp} 
+              signedIn={signedIn}
+              userSignedIn={this.userSignedIn} 
+              logout={this.logout} />
             :
-            <LandingPage signedIn={signedIn} userSignedIn={this.userSignedIn} />
+            <LandingPage 
+              userSignedUp={userSignedUp} 
+              signedUp={signedUp} 
+              handleSignUp={handleSignUp}
+              backToLogin ={backToLogin}
+              clickSignUp={clickSignUp}
+              signedIn={signedIn} 
+              userSignedIn={this.userSignedIn} />
           }
         </div>
         <Router />
