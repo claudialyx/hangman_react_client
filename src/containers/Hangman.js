@@ -8,7 +8,7 @@ import {
     Alert,
     Badge,
 } from 'reactstrap';
-import HangmanGame from './containers/HangmanGame';
+import HangmanGame from './HangmanGame';
 import Settings from './Settings';
 import axios from 'axios';
 
@@ -31,7 +31,8 @@ export default class Hangman extends React.Component {
         const jwt = JSON.parse(localStorage.me)
         axios({
             method: 'GET',
-            url: 'http://127.0.0.1:5000/api/v1/users/read',
+            // url: 'http://127.0.0.1:5000/api/v1/users/read',
+            url: 'https://hangman-flask-server.herokuapp.com/api/v1/users/read',
             headers: {
                 Authorization: `Bearer ${jwt.auth_token}`,
             }

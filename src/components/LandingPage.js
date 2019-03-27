@@ -1,10 +1,7 @@
 import React from 'react';
-import { Button, Form, Grid } from 'semantic-ui-react';
-import { Route, Link, BrowserRouter } from 'react-router-dom';
-import background from './just-waves.png';
-import LoginForm from './containers/LoginForm';
-import Router from './Router';
-import SignUpForm from './containers/SignUpForm';
+import { Grid } from 'semantic-ui-react';
+import LoginForm from '../containers/LoginForm';
+import SignUpForm from '../containers/SignUpForm';
 
 export default class LandingPage extends React.Component {
 

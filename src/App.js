@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import Hangman from './Hangman';
-import LandingPage from './LandingPage';
+import Hangman from './containers/Hangman';
+import LandingPage from './components/LandingPage';
 import Router from './Router';
 import {Alert} from 'reactstrap';
 

@@ -32,15 +32,15 @@ export default class Settings extends React.Component {
 
     update = () => {
         this.setState({
-          update: true,
+            update: true,
         })
         setTimeout(this.hideUpdateMessage, 5000)
-      }
-    
+    }
+
     hideUpdateMessage = () => {
-    this.setState({
-        update: false
-    })
+        this.setState({
+            update: false
+        })
     }
 
     handleUpdate = (event) => {
@@ -50,7 +50,8 @@ export default class Settings extends React.Component {
         console.log(jwt.auth_token)
         axios({
             method: 'POST',
-            url: 'http://127.0.0.1:5000/api/v1/users/update',
+            // url: 'http://127.0.0.1:5000/api/v1/users/update',
+            url: 'https://hangman-flask-server.herokuapp.com/api/v1/users/update',
             data: {
                 username: this.state.username,
                 email: this.state.email,
@@ -61,7 +62,7 @@ export default class Settings extends React.Component {
             }
         })
             .then(response => {
-                console.log('update response:',response);
+                console.log('update response:', response);
                 this.update()
             })
             .catch(error => {
@@ -81,7 +82,8 @@ export default class Settings extends React.Component {
 
         axios({
             method: 'POST',
-            url: 'http://127.0.0.1:5000/api/v1/users/delete',
+            // url: 'http://127.0.0.1:5000/api/v1/users/delete',
+            url: 'https://hangman-flask-server.herokuapp.com/api/v1/users/delete',
             data: {
                 username: this.state.username,
                 email: this.state.email,
