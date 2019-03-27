@@ -1,10 +1,10 @@
 import React from 'react';
 import { Form } from 'semantic-ui-react';
 import { Button } from 'react-bootstrap';
-import { BrowserRouter, Link, Route } from 'react-router-dom';
-import Router from '../Router';
 import background from '../just-waves.png';
 import axios from 'axios';
+import { Alert } from 'reactstrap';
+
 
 export default class SignUpForm extends React.Component {
     state = {
@@ -13,8 +13,6 @@ export default class SignUpForm extends React.Component {
         password: '',
         hasErrors: false,
         errors: [],
-        status: false,
-        signupMessage: [],
     }
 
     handleSubmit = (event) => {
@@ -30,20 +28,16 @@ export default class SignUpForm extends React.Component {
             }
         })
             .then(response => {
-                console.log(response);
-                this.props.userSignedIn()
-                //display successful sign up message and errors
-                this.setState({
-                    status: true,
-                    signupMessage: response.data.message,
-                    hasErrors: '',
-                })
+                console.log('response:', response);
+                localStorage.setItem('me', JSON.stringify(response.data));
+                console.log('local:', localStorage)
+                this.props.userSignedUp()
             })
             .catch(error => {
-                console.log(error)
+                console.log('ERROR:', error.response.data.message)
                 this.setState({
                     hasErrors: true,
-                    // errors: error.result.data.message,
+                    errors: error.response.data.message,
                 })
             })
     }
@@ -68,26 +62,38 @@ export default class SignUpForm extends React.Component {
 
     validateEmail = () => {
         const expression = /\S+@\S+\.\S+/
-        console.log(expression.test(this.state.email.toLowerCase()))
+        // console.log(expression.test(this.state.email.toLowerCase()))
         return expression.test(this.state.email.toLowerCase())
+    }
+
+    displayError = () => {
+        const { errors } = this.state
+        for (var i = 0; i < errors.length; i++) {
+            return (
+                < Alert color="danger" key={i}> {errors[i]}! </Alert>
+            )
+        }
     }
 
     render() {
         const { handleSignUp, clickSignUp, backToLogin } = this.props
-        const { email, username, password } = this.state
+        const { email, username, password, hasErrors } = this.state
         return (
             <div>
                 {!clickSignUp ?
                     <div style={{ backgroundImage: `url(${background})`, height: "100vh" }}>
                         <label style={{ fontSize: "2em" }} > Don't have an account? Sign up now! </label> <br />
-                        <Link to="/signup">
-                            <Button role="link" onClick={handleSignUp}>Sign Up</Button>
-                        </Link>
+                        {/* <Link to="/signup"> */}
+                        <Button role="link" onClick={handleSignUp}>Sign Up</Button>
+                        {/* </Link> */}
                     </div>
                     :
                     <div>
                         <label style={{ fontSize: "2em" }}>Sign Up</label>
                         <div style={{ margin: "1em" }}>
+                            {hasErrors ?
+                                this.displayError()
+                                : null}
                             <Form >
                                 <Form.Field>
                                     <label>Username</label>
@@ -101,7 +107,7 @@ export default class SignUpForm extends React.Component {
                                     <label>Password</label>
                                     <input type="password" onChange={this.passwordInput} value={password} placeholder='Password' />
                                 </Form.Field>
-                                <Button disabled={this.state.email && this.state.password && this.validateEmail() ? false : true} color="primary" type='submit' onClick={this.handleSubmit}> Submit</Button>
+                                <Button disabled={email && password && this.validateEmail() ? false : true} color="primary" type='submit' onClick={this.handleSubmit}> Submit</Button>
                             </Form>
                         </div>
                         <Button onClick={backToLogin} >Back to login page</Button>
