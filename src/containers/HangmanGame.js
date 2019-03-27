@@ -2,23 +2,17 @@ import React, { Component } from 'react';
 import HangmanDrawing from './HangmanDrawing';
 import LetterSlots from './LetterSlots';
 import Keyboard from './Keyboard';
-// import ChooseWord from './ChooseWord';
 import _ from 'underscore';
 
-
-const fruits = ['apple', 'banana', 'carrot']
-// const fruits = ['spaghettiagliooilio', 'dreamscapes', 'informationoverloaded']
 
 export default class HangmanGame extends React.Component {
     state = {
         word: '',
-        // word: _.sample(fruits),
         wordBank: [],
         strikes: 0,
         guesses: [],
         over: false,
         won: false,
-        // playerType: 'guesser',
     }
 
     componentDidMount() {
@@ -102,20 +96,6 @@ export default class HangmanGame extends React.Component {
         this.setState({ strikes, guesses, over, won });
     }
 
-    // changePlayer = () => {
-    //     if (this.state.over && this.state.playerType == 'guesser') {
-    //         this.setState({
-    //             playerType: 'chooser',
-    //         })
-    //     }
-    //     else {
-    //         this.setState({
-    //             playerType: 'guesser',
-    //         })
-    //     }
-    // }
-
-
     getTitle = () => {
         if (this.state.won) {
             return 'YOU WON!';
@@ -127,9 +107,7 @@ export default class HangmanGame extends React.Component {
     }
 
     render() {
-        // const { word, strikes, over, guesses, won, playerType, wordBank } = this.state
         const { word, strikes, over, guesses, won, wordBank } = this.state
-        console.log('2', wordBank)
         return (
             <div>
                 <h1>{this.getTitle()}</h1>
@@ -148,12 +126,6 @@ export default class HangmanGame extends React.Component {
                     keyboard_enabled={!over && !won}
                     // keyboard_enabled={!over && !won && playerType == 'guesser'}
                     guesses={guesses} />
-
-                {/* <ChooseWord
-                    playerType={playerType == 'chooser'}
-                    wordBank={wordBank}
-                    wordSelected={this.wordSelected}
-                /> */}
 
                 <button
                     disabled={!over && !won}
