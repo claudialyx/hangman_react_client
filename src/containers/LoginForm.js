@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Form, Grid } from 'semantic-ui-react';
-import background from '../just-waves.png';
+import { Button, Form } from 'semantic-ui-react';
+import background from '../img/just-waves.png';
 import axios from 'axios';
 import { Alert } from 'reactstrap';
 
@@ -31,6 +31,7 @@ export default class LoginForm extends React.Component {
         axios({
             method: 'POST',
             url: 'http://127.0.0.1:5000/api/v1/users/login',
+            // url: 'https://hangman-flask-server.herokuapp.com//api/v1/users/login',
             data: {
                 username: this.state.username,
                 password: this.state.password,

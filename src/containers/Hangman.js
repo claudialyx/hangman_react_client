@@ -8,7 +8,7 @@ import {
     Alert,
     Badge,
 } from 'reactstrap';
-import HangmanGame from './containers/HangmanGame';
+import HangmanGame from './HangmanGame';
 import Settings from './Settings';
 import axios from 'axios';
 
@@ -32,6 +32,7 @@ export default class Hangman extends React.Component {
         axios({
             method: 'GET',
             url: 'http://127.0.0.1:5000/api/v1/users/read',
+            // url: 'https://hangman-flask-server.herokuapp.com/api/v1/users/read',
             headers: {
                 Authorization: `Bearer ${jwt.auth_token}`,
             }
@@ -50,21 +51,20 @@ export default class Hangman extends React.Component {
     render() {
         const { isOpen, showUsername } = this.state
         const { signedIn, signedUp } = this.props
-        const styles = { textDecoration: "none", color: "black" }
+        const styles = { textDecoration: "none", color: "white", cursor: "default" }
         return (
             <div>
                 <div>
                     {isOpen ? <Settings isOpen={isOpen} toggle={this.toggle} logout={this.props.logout} /> : null}
                     {signedIn ? <Alert color="success">Welcome back {showUsername}! </Alert> : null}
                     {signedUp ? <Alert color="success">Hey! {showUsername} you've successfully signed up! You can start playing now! </Alert> : null}
-                    <Navbar color="light" light expand="md" >
+                    <Navbar color="dark" light expand="md" >
                         <Nav className="ml-auto" navbar>
                             <NavItem className="mr-4">
                                 <Link to="/" style={styles} >username: {showUsername}</Link>
                             </NavItem>
                             <NavItem className="mr-4">
-
-                                <button onClick={this.toggle}>Setting</button>
+                                <button onClick={this.toggle} >Setting</button>
                             </NavItem>
                             <NavItem className="mr-4">
                                 <button onClick={this.props.logout}>Logout</button>

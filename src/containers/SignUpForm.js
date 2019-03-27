@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form } from 'semantic-ui-react';
 import { Button } from 'react-bootstrap';
-import background from '../just-waves.png';
+import background from '../img/just-waves.png';
 import axios from 'axios';
 import { Alert } from 'reactstrap';
 
@@ -21,6 +21,7 @@ export default class SignUpForm extends React.Component {
         axios({
             method: "post",
             url: 'http://127.0.0.1:5000/api/v1/users/new',
+            // url: 'https://hangman-flask-server.herokuapp.com/api/v1/users/new',
             data: {
                 username: this.state.username,
                 email: this.state.email,

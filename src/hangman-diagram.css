@@ -32,7 +32,8 @@
       background-position: -262px -188px; }
   
   .hangman-keyboard button {
-    width: 30px;
+    width: 4vw;
+    height: 8vh;
     line-height: 23px;
     background: #abc;
     border: none;

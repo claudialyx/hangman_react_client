@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import Hangman from './Hangman';
-import LandingPage from './LandingPage';
+import Hangman from './containers/Hangman';
+import LandingPage from './components/LandingPage';
 import Router from './Router';
 import {Alert} from 'reactstrap';
 
@@ -59,7 +59,16 @@ class App extends React.Component {
     //forceupdate is to update that jwt is no longer in localStorage
     //somehow even with setState(will result in rerender) it wont detect that jwt is gone
     this.forceUpdate()
-    // setTimeout(this.hideLogoutMessage, 3000);
+    this.setState({
+      delete:true
+    })
+    setTimeout(this.hideDeleteMessage, 5000)
+  }
+
+  hideDeleteMessage =()=>{
+    this.setState({
+      delete:false
+    })
   }
 
   render() {
