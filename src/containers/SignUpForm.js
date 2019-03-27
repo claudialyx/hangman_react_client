@@ -20,8 +20,8 @@ export default class SignUpForm extends React.Component {
         // post the details to backend database 
         axios({
             method: "post",
-            // url: 'http://127.0.0.1:5000/api/v1/users/new',
-            url: 'https://hangman-flask-server.herokuapp.com/api/v1/users/new',
+            url: 'http://127.0.0.1:5000/api/v1/users/new',
+            // url: 'https://hangman-flask-server.herokuapp.com/api/v1/users/new',
             data: {
                 username: this.state.username,
                 email: this.state.email,

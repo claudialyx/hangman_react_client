@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import HangmanDrawing from './HangmanDrawing';
 import LetterSlots from './LetterSlots';
 import Keyboard from './Keyboard';
 import _ from 'underscore';
-
+import { Button } from 'reactstrap';
 
 export default class HangmanGame extends React.Component {
     state = {
@@ -98,9 +98,9 @@ export default class HangmanGame extends React.Component {
 
     getTitle = () => {
         if (this.state.won) {
-            return 'YOU WON!';
+            return "YOU'RE RIGHT !";
         } else if (this.state.over) {
-            return 'Game Over';
+            return "YOU'RE WRONG!";
         } else {
             return 'Hang Man';
         }
@@ -121,17 +121,21 @@ export default class HangmanGame extends React.Component {
                     over={over}
                     guesses={guesses} />
 
-                <Keyboard
-                    checkLetter={this.checkLetter}
-                    keyboard_enabled={!over && !won}
-                    // keyboard_enabled={!over && !won && playerType == 'guesser'}
-                    guesses={guesses} />
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Keyboard
+                        checkLetter={this.checkLetter}
+                        keyboard_enabled={!over && !won}
+                        // keyboard_enabled={!over && !won && playerType == 'guesser'}
+                        guesses={guesses} />
 
-                <button
-                    disabled={!over && !won}
-                    onClick={this.newGame}>
-                    New Game
-            </button>
+                    <br />
+                    <Button
+                        color="primary"
+                        disabled={!over && !won}
+                        onClick={this.newGame}>
+                        New Game
+                    </Button>
+                </div >
             </div>
         )
     }

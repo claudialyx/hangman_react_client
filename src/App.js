@@ -59,7 +59,16 @@ class App extends React.Component {
     //forceupdate is to update that jwt is no longer in localStorage
     //somehow even with setState(will result in rerender) it wont detect that jwt is gone
     this.forceUpdate()
-    // setTimeout(this.hideLogoutMessage, 3000);
+    this.setState({
+      delete:true
+    })
+    setTimeout(this.hideDeleteMessage, 5000)
+  }
+
+  hideDeleteMessage =()=>{
+    this.setState({
+      delete:false
+    })
   }
 
   render() {
